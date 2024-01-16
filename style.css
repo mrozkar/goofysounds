@@ -318,3 +318,10 @@ h2 {
 .close-button {
 	float: right;
 }
+
+.playButton {
+    margin-left: 5px; /* Dodaj margines z lewej strony */
+    background-color: transparent; /* Ustaw tło na przezroczyste */
+    border: none; /* Usuń obramowanie */
+
+}
