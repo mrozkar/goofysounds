@@ -15,7 +15,7 @@
 
 
 <div class="navbar">
-  <a href='#home'>
+  <a href=''>
     <img src='gs.png' alt='goofy sounds' class='gs'>
   </a>
   <a href="https://www.jcxcontentfinder.pl/">JCX Content Finder</a>
@@ -64,6 +64,10 @@
 
 
 <h2>Wybierz, które dźwięki mają być odtwarzane</h2>
+
+
+<img id="speaker" src='speaker.png' width='20' height='20'><input type="range" id="suwak-glosnosci" min="0" max="100" step="1" value="50">
+
 
 <div id="checkbutton-container">
 <button class='buttoncheck' id="checkbutton" onclick="odznaczWszystkie()">Odznacz wszystkie</button>
@@ -484,10 +488,25 @@
 </ul>
 
 <script>
+
+	var glosnosc = 1; // Domyślna wartość głośności (możesz dostosować)
+	var obecnieOdtwarzaneDzwieki = []; // Tablica do przechowywania aktualnie odtwarzanych dźwięków
+
+	document.getElementById('suwak-glosnosci').addEventListener('input', function () {
+		glosnosc = this.value / 100;
+
+		// Aktualizacja głośności dla wszystkich aktualnie odtwarzanych dźwięków
+		obecnieOdtwarzaneDzwieki.forEach(function (audio) {
+			audio.volume = glosnosc;
+		});
+	});
+
+
     var audio;
     var loopRunning = false;
     var clicked = false;
 	var checkboxchecked = true;
+
 
     function startButtonClicked() {
         if (clicked == false) {
@@ -499,6 +518,7 @@
             stopInfiniteLoop();
             clicked = false;
             var button = document.getElementById('button');
+			terazOdtwarzane.pause();
             button.innerText = "Start";
         }
     }
@@ -552,7 +572,16 @@
             return '';
         }
     }
+	
+	var audio = new Audio(); // Inicjalizacja jednej instancji obiektu Audio
+	var glosnosc = 0.5; // Domyślna wartość głośności (możesz dostosować)
 
+	document.getElementById('suwak-glosnosci').addEventListener('input', function () {
+		glosnosc = this.value / 100;
+	});
+
+
+	
     function runInfiniteLoop() {
         function iteration() {
             if (loopRunning) {
@@ -561,9 +590,11 @@
                 if (wylosowanaLiczba !== null && wylosowanaLiczba !== '') {
                    
                     wylosowanyLink = losujElement();
-                    audio = new Audio(wylosowanyLink);
+                    audio.src = wylosowanyLink;
 					console.log(wylosowanyLink)
+					audio.volume = glosnosc;
                     audio.play();
+					terazOdtwarzane = audio;
                     setTimeout(iteration, Number(wylosowanaLiczba));
                 } else {
                     console.log('');
