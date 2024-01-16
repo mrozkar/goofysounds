@@ -586,7 +586,10 @@
 </ul>
 
 <script>
-
+function playSound(url) {
+	var audio = new Audio(url);
+	audio.play();
+	}
 	var glosnosc = 1; // Domyślna wartość głośności (możesz dostosować)
 	var obecnieOdtwarzaneDzwieki = []; // Tablica do przechowywania aktualnie odtwarzanych dźwięków
 
