@@ -30,11 +30,10 @@ h2 {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-gap: 10px;
 	
+	
 }
 
-.checkbox-container {
-    margin-bottom: 10px;
-}
+ 
 		
 #button-container {
     margin-top: 16px; /* Dodany odstęp między nagłówkiem a przyciskiem */
@@ -174,16 +173,17 @@ h2 {
 
 /* Style the footer */
 .footer {
-  margin-top: auto;
   background-color: #333;
-  padding: 10px;
-  text-align: center;
   color: white;
-  padding: 10px;
-  width: 100%;
+  padding: 1px;
   position: fixed;
   bottom: 0;
+  width: 100%;
 }
+
+#linki {
+      margin-bottom: 60px; /* Adjust the value based on the height of your footer */
+    }
 
 .labels {
     margin-right: 10px; /* Dodaj margines z prawej strony */
@@ -306,9 +306,11 @@ h2 {
 	widh: 20px;
 	height: 20px;
 	float: left;
+	margin-left: 5px;
 	font-family: 'Palatino', sans-serif;
 	font-weight: bold;
 	}
+	
 #suwak-glosnosci {
     width: 150px; /* Dostosuj szerokość suwaka według potrzeb */
     margin-top: 10px;
