@@ -54,7 +54,7 @@ h2 {
 	
 }
 .checkbox-container {
-    margin-bottom: 10px;
+    margin-bottom: 2px;
 }
 
 .checkbox-container input {
@@ -303,8 +303,8 @@ h2 {
 	}
 	
 .dc {
-	widh: 50px;
-	height: 50px;
+	widh: 20px;
+	height: 20px;
 	float: left;
 	font-family: 'Palatino', sans-serif;
 	font-weight: bold;
