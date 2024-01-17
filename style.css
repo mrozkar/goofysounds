@@ -299,8 +299,16 @@ h2 {
 	widh: 50px;
 	height: 50px;
 	float: left;
+	margin-left: 20px;
 	}
 	
+.dc {
+	widh: 50px;
+	height: 50px;
+	float: left;
+	font-family: 'Palatino', sans-serif;
+	font-weight: bold;
+	}
 #suwak-glosnosci {
     width: 150px; /* Dostosuj szerokość suwaka według potrzeb */
     margin-top: 10px;
