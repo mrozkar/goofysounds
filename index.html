@@ -29,6 +29,7 @@
   </a>
   <a href="https://www.jcxcontentfinder.pl/">JCX Content Finder</a>
   <a class="news-button" onclick="openModal()">Jak korzystać?</a>
+  <a onclick="openModalSave()">Zapisz ustawienia</a>
   
  
 <div id="poradnik" class="modal">
@@ -41,17 +42,58 @@
     </div>
 </div>
  
+ <div id="save" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModalSave()">&times;</span>
+        <p>Przycisk wygeneruje link do strony z Twoimi aktualnymi ustawieniami</p>
+        <a class='buttonSave' onclick='getCheckedCheckboxes()'>Generuj</a>
+		<p id='pLink' href='#' style='display: none;' ></p>
+    </div>
+</div>
+ 
 </div>
 
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
-		// Ustaw wartości pól na przykładowe
-		document.getElementById('wprowadzLiczbeMin').value = '30';
-		document.getElementById('wprowadzLiczbeMax').value = '60';
-	});
+document.addEventListener("DOMContentLoaded", function () {
+    // Ustaw wartości pól na przykładowe
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has('enabledSounds')) {
+        const enabledSounds = urlParams.get('enabledSounds');
+        
+        // Sprawdzenie, czy enabledSounds nie jest pusty przed przetwarzaniem
+        if (enabledSounds.trim() !== '') {
+            const enabled = enabledSounds.split(',').map(Number);
+            var listaCheckboxow = document.querySelectorAll('#linki input[type="checkbox"]');
+			listaCheckboxow.forEach(function (checkbox) {
+				const checkboxId = Number(checkbox.id.replace('check', ''));
+				if (!enabled.includes(checkboxId)) {
+					checkbox.checked=false;
+				}
+			});
+        }
+    }
+
+    if (urlParams.has('time')) {
+        const time = urlParams.get('time').split(',').map(Number);
+
+        if (time.length >= 2) {
+            document.getElementById('wprowadzLiczbeMin').value = time[0];
+            document.getElementById('wprowadzLiczbeMax').value = time[1];
+        } else {
+            document.getElementById('wprowadzLiczbeMin').value = '30';
+            document.getElementById('wprowadzLiczbeMax').value = '60';
+        }
+    } else {
+        // Brak parametrów, ustaw domyślne wartości
+        document.getElementById('wprowadzLiczbeMin').value = '30';
+        document.getElementById('wprowadzLiczbeMax').value = '60';
+    }
+});
+
 </script>
 <h1>Podaj przedział w jakim mają być odtwarzane dźwięki</h1>
-<label class='labels2' for="wprowadzLiczbeMin">Od</label>
+<label class='labels2' type="number" for="wprowadzLiczbeMin">Od</label>
 <input class='labels' type="number" id="wprowadzLiczbeMin" />
 
 <label for="wybor"></label>
@@ -60,7 +102,7 @@
     <option value="min1">minuty</option>
 </select>
 
-<label class='labels2' for="wprowadzLiczbeMax">Do</label>
+<label class='labels2' type="number" for="wprowadzLiczbeMax">Do</label>
 <input class='labels' type="number" id="wprowadzLiczbeMax" />
 
 <label for="wybor2"></label>
@@ -872,6 +914,8 @@
         </label>
         <button class="playButton" onclick="playSound('https://cdn.discordapp.com/attachments/733384698616741982/1201150493909590156/Yippee_-_Meme_Sound_Effect.mp3')">▶️</button>
     </li>
+    
+
 	
 </ul>
 
@@ -973,7 +1017,49 @@
 		glosnosc = this.value / 100;
 	});
 
-
+	function getCheckedCheckboxes() {
+		var zaznaczone=[];
+		var checkboxCount=0;
+        var listaCheckboxow2 = document.querySelectorAll('#linki input[type="checkbox"]');
+        listaCheckboxow2.forEach(function (checkbox) {
+			if (checkbox.checked) {
+				const checkboxId = Number(checkbox.id.replace('check', ''));
+				zaznaczone.push(checkboxId);
+				checkboxCount= checkboxCount+1;
+			} else {
+				checkboxCount= checkboxCount+1;
+			}
+		});
+		var joinedList = []
+		joinedList = zaznaczone.join(',') 
+		var min = document.getElementById('wprowadzLiczbeMin').value;
+		var max = document.getElementById('wprowadzLiczbeMax').value;
+        var timeFormat1 = document.getElementById('wybor');
+        if (timeFormat1.value == 'min1') {
+            min = min * 60;
+            }
+        var timeFormat2 = document.getElementById('wybor2');
+        if (timeFormat2.value == 'min2') {
+            max = max * 60;
+           }
+           console.log(checkboxCount)
+           console.log(zaznaczone.length)
+		if (Number(zaznaczone.length) < Number(checkboxCount)) {
+			var link = 'https://goofysounds.ovh?time=' + min + ',' + max + '&enabledSounds=' + joinedList;
+		} else {
+			var link = 'https://goofysounds.ovh?time=' + min + ',' + max;
+		}
+		console.log(link);
+		var pLink = document.getElementById('pLink');
+        navigator.clipboard.writeText(link)
+            .then(function () {
+                alert('Link został skopiowany do schowka');
+            })
+            
+		
+		return joinedList;
+		
+	}
 	
     function runInfiniteLoop() {
         function iteration() {
@@ -1040,6 +1126,16 @@
 
     function closeModal() {
         document.getElementById('poradnik').style.display = 'none';
+    }
+
+    function openModalSave() {
+        document.getElementById('save').style.display = 'flex';
+    }
+    
+    function closeModalSave() {
+        document.getElementById('save').style.display = 'none';
+        document.getElementById('pLink').style.display = 'none';
+        
     }
 
     // Zamykanie okna modalnego po kliknięciu poza nim
