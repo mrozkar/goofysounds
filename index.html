@@ -1201,7 +1201,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         iteration();
     }
-
+let bezPowtorzen = [];
     function losujElement() {
         var lista = document.getElementById('linki');
         var elementyListy = lista.getElementsByTagName('li');
@@ -1215,9 +1215,25 @@ document.addEventListener("DOMContentLoaded", function () {
 				wybraneLinki.push(wartoscCheckboxa);
             }
         }
-
         if (wybraneLinki.length > 0) {
-            var losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);
+			var losowyIndeks;
+			if (wybraneLinki.length >= 7) {
+				do 
+					{losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);}
+				while  
+					(bezPowtorzen.includes(losowyIndeks));
+				
+				if (bezPowtorzen.length < Math.floor(wybraneLinki.length / 3)) {
+					bezPowtorzen.push(losowyIndeks);
+					console.log('lista '+bezPowtorzen);
+				} else {
+					bezPowtorzen.shift();
+					bezPowtorzen.push(losowyIndeks);
+					console.log('lista '+bezPowtorzen);
+				}
+			} else {losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);}
+			
+            
             return wybraneLinki[losowyIndeks];
         } else {
             return null;
