@@ -37,7 +37,7 @@
         <span class="close-button" onclick="closeModal()">&times;</span>
         <p>Losowe dźwięki są odtwarzane w losowym przedziale pomiędzy czasem podanym przez użytkownika</p>
 		<p>START uruchomi odtwarzanie, które będzie trwać do wciśnięcia STOP</p>
-		<p>Podczas trwania pętli możesz na bieżąco zmieniać czas i dźwięki, które będą odtwarzane</p>
+		<p>Zrestartuj odtwarzanie po zmienieniu ustawień aby uniknąć błędów</p>
 		<p>Zmiana głośności zastusuje się od następnego dźwięku po użyciu suwaka</p>
     </div>
 </div>
@@ -1062,11 +1062,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startButtonClicked() {
         if (clicked == false) {
+			bezPowtorzen = []
             clicked = true;
             var button = document.getElementById('button');
             button.innerText = "Stop";
             startInfiniteLoop();
         } else {
+			bezPowtorzen = []
             stopInfiniteLoop();
             clicked = false;
             var button = document.getElementById('button');
@@ -1216,22 +1218,43 @@ let bezPowtorzen = [];
             }
         }
         if (wybraneLinki.length > 0) {
-			var losowyIndeks;
-			if (wybraneLinki.length >= 7) {
-				do 
-					{losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);}
-				while  
-					(bezPowtorzen.includes(losowyIndeks));
+			var losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);
+			if (wybraneLinki.length >= 7 && wybraneLinki.length < 40) {
+				while (bezPowtorzen.includes(losowyIndeks))
+					{losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);
+					if (Math.floor(wybraneLinki.length / 3) >= wybraneLinki.length) {break;}
+					}
 				
 				if (bezPowtorzen.length < Math.floor(wybraneLinki.length / 3)) {
 					bezPowtorzen.push(losowyIndeks);
 					console.log('lista '+bezPowtorzen);
+					console.log('dl lista '+Math.floor(wybraneLinki.length / 3));
 				} else {
 					bezPowtorzen.shift();
 					bezPowtorzen.push(losowyIndeks);
 					console.log('lista '+bezPowtorzen);
+					console.log('dl lista '+Math.floor(wybraneLinki.length / 3));
 				}
-			} else {losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);}
+
+			}
+			else if (wybraneLinki.length >= 40) {
+				while (bezPowtorzen.includes(losowyIndeks))
+					{losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);
+					if (Math.floor(wybraneLinki.length / 9) >= wybraneLinki.length) {break;}
+					}
+				
+				if (bezPowtorzen.length < Math.floor(wybraneLinki.length / 9)) {
+					bezPowtorzen.push(losowyIndeks);
+					console.log('lista '+bezPowtorzen);
+					console.log('dl lista '+Math.floor(wybraneLinki.length / 9));
+				} else {
+					bezPowtorzen.shift();
+					bezPowtorzen.push(losowyIndeks);
+					console.log('lista '+bezPowtorzen);
+					console.log('dl lista '+Math.floor(wybraneLinki.length / 9));
+				}
+			}
+			else {losowyIndeks = Math.floor(Math.random() * wybraneLinki.length);}
 			
             
             return wybraneLinki[losowyIndeks];
