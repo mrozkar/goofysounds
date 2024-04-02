@@ -1010,6 +1010,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 	function playSound(url) {
 		var audio = new Audio(url);
+		audio.volume = glosnosc;
 		audio.play();
 	}
 	var glosnosc = 1; // Domyślna wartość głośności (możesz dostosować)
